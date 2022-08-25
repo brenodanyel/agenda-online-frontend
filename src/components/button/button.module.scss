@@ -1,0 +1,23 @@
+@import "src/variables.scss";
+
+.button {
+  padding: 10px 15px;
+  color: $color-light;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  background-color: $color-primary;
+
+  &:hover {
+    background-color: $color-primary-2;
+  }
+
+  &:active {
+    background-color: $color-primary-3;
+  }
+}
