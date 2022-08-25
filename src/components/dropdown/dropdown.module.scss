@@ -1,0 +1,62 @@
+@import "src/variables.scss";
+
+.dropdown_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: $color-light-3;
+}
+
+.dropdown {
+  font-size: 17px;
+
+  border-radius: 4px;
+  border: 1px solid $color-light-2;
+
+  padding: 8px;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:hover {
+    border: 1px solid $color-light-4;
+  }
+
+  &.active {
+    border: 1px solid $color-primary;
+
+    .arrow {
+      transform: rotateZ(180deg);
+      color: $color-primary;
+    }
+  }
+}
+
+.arrow {
+  transition: all 0.2s ease-in-out;
+}
+
+.options_container {
+  border-radius: 4px;
+  border: 1px solid $color-primary;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-height: 200px;
+  overflow: auto;
+}
+
+.option {
+  color: $color-dark;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 8px;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: $color-tertiary;
+  }
+}
