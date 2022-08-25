@@ -1,0 +1,22 @@
+@import "src/variables.scss";
+
+.input {
+  font-size: 17px;
+  width: 100%;
+
+  outline: none;
+
+  border-radius: 4px;
+  border: 1px solid $color-light-2;
+
+  padding: 8px;
+  color: $color-light-3;
+
+  &:hover {
+    border: 1px solid $color-light-4;
+  }
+
+  &:focus {
+    border: 1px solid $color-primary;
+  }
+}
