@@ -1,0 +1,35 @@
+@import "src/variables.scss";
+
+.register_form {
+  display: flex;
+  flex-direction: column;
+  padding: 2em;
+  background-color: $color-tertiary;
+  border-radius: 5px;
+  gap: 10px;
+
+  position: relative;
+
+  &::after {
+    content: "";
+    height: 90%;
+    width: 1px;
+    background-color: $color-tertiary;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(-20px, -50%);
+    opacity: 0.3;
+  }
+}
+
+.header {
+  font-size: 2em;
+  text-align: center;
+  color: $color-primary;
+}
+
+.link {
+  text-decoration: underline;
+  cursor: pointer;
+}
