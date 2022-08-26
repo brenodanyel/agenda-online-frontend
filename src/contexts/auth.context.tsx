@@ -68,6 +68,9 @@ export const AuthContextProvider = (props: AuthContextProviderProps) => {
           toast.remove(loginToast);
         });
 
+      if (!result?.user) return;
+      if (!result?.token) return;
+
       setUser(result.user);
       setToken(result.token);
       navigate('/');
