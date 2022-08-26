@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import validator from 'validator';
 import { Input } from '../../../components/input';
 import { Button } from '../../../components/button';
 import { Checkbox } from '../../../components/checkbox';
@@ -16,6 +17,20 @@ export function LoginForm() {
   const [password, setPassword] = useState('');
   const [keepConnected, setKeepConnected] = useState(false);
 
+  const hasUsernameError = () => {
+    if (username.length <= 5) return 'O nome de usuário deve ter entre 5 e 15 caracteres';
+  };
+
+  const hasPasswordError = () => {
+    if (password.length <= 5) return 'A senha deve ter pelo menos 5 caracteres';
+  };
+
+  const isButtonDisabled = () => {
+    if (hasUsernameError()) return true;
+    if (hasPasswordError()) return true;
+    return false;
+  };
+
   const onClickLogin = () => {
     signIn({ username, password });
   };
@@ -26,6 +41,7 @@ export function LoginForm() {
       <Input
         value={username}
         placeholder="Nome de usuário"
+        errorLabel={hasUsernameError()}
         onChange={setUsername}
       />
       <Input
@@ -33,6 +49,7 @@ export function LoginForm() {
         value={password}
         placeholder="Senha"
         onChange={setPassword}
+        errorLabel={hasPasswordError()}
       />
       <Checkbox
         checked={keepConnected}
@@ -43,6 +60,7 @@ export function LoginForm() {
       <Button
         onClick={onClickLogin}
         text="Entrar"
+        disabled={isButtonDisabled()}
       />
       <Link to={"/register"}>
         <Button

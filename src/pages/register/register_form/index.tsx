@@ -54,8 +54,8 @@ export function RegisterForm() {
       <Input
         value={username}
         placeholder={"Nome de usuário"}
-        errorLabel={hasUsernameError()}
         onChange={setUsername}
+        errorLabel={hasUsernameError()}
       />
       <Input
         value={email}
