@@ -5,7 +5,7 @@ export function Register() {
   return (
     <div className={style.register_wrapper}>
       <div className={style.register}>
-        <span className={style.logo}>Softeo <br />Tecnologia</span>
+        <span className={style.logo}>Agenda Online</span>
         <RegisterForm />
       </div>
     </div >
