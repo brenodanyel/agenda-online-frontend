@@ -54,11 +54,7 @@ export function RegisterForm() {
       >
         Li e aceito os
         {' '}
-        <a className={style.link} href="">termos</a>
-        {' '}
-        e
-        {' '}
-        <a className={style.link} href="">politicas de privacidade</a>
+        <a className={style.link} href="">termos.</a>
       </Checkbox>
       <Button
         onClick={onClickRegister}

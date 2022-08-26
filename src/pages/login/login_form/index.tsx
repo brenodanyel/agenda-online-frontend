@@ -49,7 +49,7 @@ export function LoginForm() {
           text="Criar Conta"
           variant="outlined"
         />
-      </Link >
+      </Link>
     </div>
   );
 }
