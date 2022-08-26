@@ -1,6 +1,7 @@
 @import "src/variables.scss";
 
 .button {
+  width: 100%;
   padding: 10px 15px;
   color: $color-light;
   border: none;
@@ -11,13 +12,32 @@
   font-size: 14px;
   text-align: center;
   font-family: "Inter", sans-serif;
-  background-color: $color-primary;
+  background: none;
 
-  &:hover {
-    background-color: $color-primary-2;
+  &.default {
+    background-color: $color-primary;
+
+    &:hover {
+      background-color: $color-primary-2;
+    }
+
+    &:active {
+      background-color: $color-primary-3;
+    }
   }
 
-  &:active {
-    background-color: $color-primary-3;
+  &.outlined {
+    border: 1px solid $color-primary;
+    color: $color-primary;
+
+    &:hover {
+      border: 1px solid $color-primary-2;
+      color: $color-primary-2;
+    }
+
+    &:active {
+      border: 1px solid $color-primary-3;
+      color: $color-primary-3;
+    }
   }
 }
