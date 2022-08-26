@@ -9,6 +9,7 @@ import style from './login_form.module.scss';
 
 export function LoginForm() {
   useScrollReveal();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [keepConnected, setKeepConnected] = useState(false);
@@ -32,10 +33,11 @@ export function LoginForm() {
         onChange={setPassword}
       />
       <Checkbox
-        text='Me mantenha conectado'
         checked={keepConnected}
         onChange={setKeepConnected}
-      />
+      >
+        Me mantenha conectado
+      </Checkbox>
       <Button
         onClick={onClickLogin}
         text="Entrar"
