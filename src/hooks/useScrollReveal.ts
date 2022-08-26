@@ -10,6 +10,6 @@ export function useScrollReveal() {
       reset: false,
     });
 
-    reveal.reveal(".reveal", { delay: 500, interval: 200 });
+    reveal.reveal(".reveal", { delay: 200, interval: 200 });
   }, []);
 }
