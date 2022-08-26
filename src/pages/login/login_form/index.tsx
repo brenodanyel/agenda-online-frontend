@@ -4,18 +4,20 @@ import { Input } from '../../../components/input';
 import { Button } from '../../../components/button';
 import { Checkbox } from '../../../components/checkbox';
 import { useScrollReveal } from '../../../hooks/useScrollReveal';
+import { useAuth } from '../../../hooks/useAuth';
 
 import style from './login_form.module.scss';
 
 export function LoginForm() {
   useScrollReveal();
+  const { signIn } = useAuth();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [keepConnected, setKeepConnected] = useState(false);
 
   const onClickLogin = () => {
-    console.log({ username, password, keepConnected });
+    signIn({ username, password });
   };
 
   return (

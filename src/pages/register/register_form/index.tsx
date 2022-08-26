@@ -4,11 +4,13 @@ import { Input } from '../../../components/input';
 import { Button } from '../../../components/button';
 import { Checkbox } from '../../../components/checkbox';
 import { useScrollReveal } from '../../../hooks/useScrollReveal';
+import { useAuth } from '../../../hooks/useAuth';
 
 import style from './register_form.module.scss';
 
 export function RegisterForm() {
   useScrollReveal();
+  const { signUp } = useAuth();
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -17,7 +19,7 @@ export function RegisterForm() {
   const [readTerms, setReadTerms] = useState(false);
 
   const onClickRegister = () => {
-    console.log({ username, email, password, password2, readTerms });
+    signUp({ username, email, password });
   };
 
   return (
