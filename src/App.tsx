@@ -1,7 +1,13 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Login } from './pages/login';
+
 export function App() {
   return (
-    <div>
-      <h1>Softeo</h1>
-    </div>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Navigate to="/login" />} />
+        <Route path='/login' element={<Login />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
