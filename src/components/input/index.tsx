@@ -4,6 +4,7 @@ type InputProps = {
   type?: string;
   placeholder?: string;
   value: string;
+  errorLabel?: string;
   onChange(value: any): void;
 };
 
@@ -12,16 +13,24 @@ export function Input(props: InputProps) {
     type = 'text',
     placeholder,
     value,
+    errorLabel,
     onChange,
   } = props;
 
   return (
-    <input
-      className={style.input}
-      type={type}
-      placeholder={placeholder}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-    />
+    <div className={style.input_wrapper}>
+      <input
+        className={style.input}
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+      {
+        errorLabel && (
+          <span className={style.errorLabel}>{errorLabel}</span>
+        )
+      }
+    </div>
   );
 }
