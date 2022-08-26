@@ -40,4 +40,8 @@
       color: $color-primary-3;
     }
   }
+
+  &[disabled] {
+    opacity: 0.5;
+  }
 }
