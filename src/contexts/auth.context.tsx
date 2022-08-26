@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState, ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import * as auth from '../services/auth.service';
 
 type signInParams = {
   username: string;
@@ -50,13 +51,55 @@ export const AuthContextProvider = (props: AuthContextProviderProps) => {
   const [token, setToken] = useState(defaultValue.token);
 
   const signIn = async (params: signInParams) => {
-    console.log(params);
-    toast.success('Login efetuado com sucesso');
+    try {
+      const { username, password } = params;
+
+      const loginToast = toast.loading('Entrando...');
+
+      const result = await auth.signIn(username, password)
+        .then((res) => {
+          toast.success('Login efetuado com sucesso!');
+          return res;
+        })
+        .catch((e) => {
+          e?.response?.data?.error && toast.error(e.response.data.error);
+        })
+        .finally(() => {
+          toast.remove(loginToast);
+        });
+
+      setUser(result.user);
+      setToken(result.token);
+      navigate('/');
+    } catch (e: any) {
+      console.log(e.message);
+    }
   };
 
   const signUp = async (params: signUpParams) => {
-    console.log(params);
-    toast.success('Conta criada com sucesso');
+    try {
+      const { username, email, password } = params;
+      const registerToast = toast.loading('Registrando...');
+
+      const result = await auth.signUp(username, email, password)
+        .then((res) => {
+          toast.success('Conta criada com sucesso!');
+          return res;
+        })
+        .catch((e) => {
+          e?.response?.data?.error && toast.error(e.response.data.error);
+        })
+        .finally(() => {
+          toast.remove(registerToast);
+        });
+
+      setUser(result.user);
+      setToken(result.token);
+      navigate('/');
+
+    } catch (e: any) {
+      console.log(e.message);
+    }
   };
 
   const signOut = () => {
