@@ -1,0 +1,11 @@
+@import "src/variables.scss";
+
+.checkbox_label {
+  display: flex;
+  gap: 3px;
+  font-size: 14px;
+}
+
+.checkbox {
+  accent-color: $color-primary;
+}
