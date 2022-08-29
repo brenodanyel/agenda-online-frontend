@@ -6,11 +6,13 @@ import { Payment } from '../types/payment';
 
 type PaymentsContextType = {
   payments: Payment[],
+  fetchAllPayments(): Promise<void>;
   removePayment(id: string): Promise<void>;
 };
 
 const defaultValue: PaymentsContextType = {
   payments: [],
+  fetchAllPayments: async () => { },
   removePayment: async () => { },
 };
 
@@ -26,17 +28,17 @@ export const PaymentsContextProvider = (props: PaymentsContextProviderProps) => 
 
   const [payments, setPayments] = useState(defaultValue.payments);
 
-  useEffect(() => {
-    const fetchAllPayments = async () => {
-      if (!token) return;
-      try {
-        const payments = await paymentsApi.findByUser(token);
-        setPayments(payments);
-      } catch (e) {
-        console.log(e);
-      }
-    };
+  const fetchAllPayments = async () => {
+    if (!token) return;
+    try {
+      const payments = await paymentsApi.findByUser(token);
+      setPayments(payments);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
+  useEffect(() => {
     fetchAllPayments();
   }, []);
 
@@ -55,6 +57,7 @@ export const PaymentsContextProvider = (props: PaymentsContextProviderProps) => 
 
   const value = {
     payments,
+    fetchAllPayments,
     removePayment,
   };
 
