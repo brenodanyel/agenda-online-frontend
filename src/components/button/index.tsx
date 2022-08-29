@@ -7,6 +7,7 @@ type ButtonProps = {
   variant?: 'default' | 'outlined';
   disabled?: boolean,
   icon?: ReactNode,
+  className?: string,
 };
 
 export function Button(props: ButtonProps) {
@@ -16,12 +17,13 @@ export function Button(props: ButtonProps) {
     variant = 'default',
     disabled,
     icon,
+    className,
   } = props;
 
   return (
     <button
       onClick={onClick}
-      className={`${style.button} ${style[variant]}`}
+      className={`${style.button} ${style[variant]} ${className ?? ''}`}
       disabled={disabled}
     >
       {icon}
