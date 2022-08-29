@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { toast, Toast } from 'react-hot-toast';
 import { RiDeleteBin6Line, MdOutlineCancel } from 'react-icons/all';
 import { Button } from '../button';
@@ -19,11 +20,18 @@ export function ConfirmationToast(props: ConfirmationToastProps) {
     onCancel,
   } = props;
 
+  const confirmation = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    confirmation?.current?.focus();
+  }, [confirmation.current]);
+
   return (
     <div className={style.confirmationToast}>
       <span>{title}</span>
       <div className={style.buttonsContainer}>
         <Button
+          ref={confirmation}
           text='Confirmar'
           icon={<RiDeleteBin6Line />}
           onClick={() => { onConfirm && onConfirm(); toast.dismiss(t.id); }}

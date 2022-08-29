@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, forwardRef } from 'react';
 import style from './button.module.scss';
 
 type ButtonProps = {
@@ -10,7 +10,7 @@ type ButtonProps = {
   className?: string,
 };
 
-export function Button(props: ButtonProps) {
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const {
     text,
     onClick,
@@ -25,9 +25,10 @@ export function Button(props: ButtonProps) {
       onClick={onClick}
       className={`${style.button} ${style[variant]} ${className ?? ''}`}
       disabled={disabled}
+      ref={ref}
     >
       {icon}
       {text}
     </button>
   );
-}
+});
