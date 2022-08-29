@@ -1,11 +1,14 @@
 import { RiAddLine } from 'react-icons/ri';
 import { Button } from '../../../components/button';
 import { usePayments } from '../../../hooks/usePayments';
+import { useScrollReveal } from '../../../hooks/useScrollReveal';
 import { formatMoney } from '../../../utils/formatMoney';
 import { PaymentsTable } from './payments_table';
 import style from './payments.module.scss';
 
 export function Payments() {
+  useScrollReveal();
+
   const { payments } = usePayments();
 
   const total = payments.reduce((previous, current) => {
@@ -13,7 +16,7 @@ export function Payments() {
   }, 0);
 
   return (
-    <div className={style.payments}>
+    <div className={`${style.payments} reveal`}>
       <div className={style.headerContainer}>
         <h1 className={style.header}>Pagamentos</h1>
         <Button text="Criar pagamento" icon={<RiAddLine size={22} />} />
