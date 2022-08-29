@@ -8,6 +8,7 @@ import { usePayments } from '../../../../hooks/usePayments';
 import { formatMoney } from '../../../../utils/formatMoney';
 
 import style from './payments_table.module.scss';
+import { useEffect } from 'react';
 
 type PaymentsTableProps = {
   data: Payment[];
@@ -40,6 +41,12 @@ export function PaymentsTable(props: PaymentsTableProps) {
 
     setActiveToast(t);
   };
+
+  useEffect(() => () => {
+    if (activeToast) {
+      toast.dismiss(activeToast);
+    }
+  }, [activeToast]);
 
   return (
     <table className={style.table}>
