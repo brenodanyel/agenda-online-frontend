@@ -1,0 +1,28 @@
+@import "src/variables.scss";
+
+.header {
+  padding: 5px;
+  background-color: $color-primary-3;
+  color: $color-light;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.leftSide {
+  font-size: 1.2em;
+}
+
+.rightSide {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.signOutButton {
+  background-color: $color-primary-3;
+  border: none;
+  padding: 15px 25px;
+  color: $color-light;
+}
