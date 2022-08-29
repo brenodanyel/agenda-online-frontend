@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState, ReactNode } from 'react';
+import { toast } from 'react-hot-toast';
 import * as paymentsApi from '../services/payments.service';
 import { useAuth } from '../hooks/useAuth';
 import { Payment } from '../types/payment';
@@ -40,10 +41,16 @@ export const PaymentsContextProvider = (props: PaymentsContextProviderProps) => 
   }, []);
 
   const removePayment = async (id: string) => {
-    // todo: await response from server
-    setPayments((state) => {
-      return state.filter((payment) => payment.id !== id);
-    });
+    if (!token) return;
+    try {
+      await paymentsApi.deleteByUser(token, id);
+      setPayments((state) => {
+        return state.filter((payment) => payment.id !== id);
+      });
+      toast.success('Pagamento removido com sucesso!');
+    } catch (e: any) {
+      toast.error(e?.response?.data?.error ?? 'Erro desconhecido');
+    }
   };
 
   const value = {

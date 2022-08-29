@@ -29,7 +29,6 @@ export function PaymentsTable(props: PaymentsTableProps) {
 
     const onConfirmRemove = async () => {
       await removePayment(id);
-      toast.success('Pagamento removido!');
     };
 
     const t = toast((t) => (

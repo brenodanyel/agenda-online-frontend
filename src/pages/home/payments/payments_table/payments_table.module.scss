@@ -13,6 +13,10 @@
     top: -1px;
     z-index: 1;
   }
+
+  td {
+    white-space: nowrap;
+  }
 }
 
 .table td,

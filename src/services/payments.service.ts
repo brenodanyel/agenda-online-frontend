@@ -9,3 +9,13 @@ export const findByUser = async (token: string) => {
 
   return result?.data;
 };
+
+export const deleteByUser = async (token: string, id: string) => {
+  const result = await instance({
+    url: `/payments/me/${id}`,
+    method: 'delete',
+    headers: { authorization: `Bearer ${token}` },
+  });
+
+  return result?.data;
+};
