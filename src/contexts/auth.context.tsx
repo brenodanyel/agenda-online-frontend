@@ -62,7 +62,7 @@ export const AuthContextProvider = (props: AuthContextProviderProps) => {
           return res;
         })
         .catch((e) => {
-          e?.response?.data?.error && toast.error(e.response.data.error);
+          toast.error(e?.response?.data?.error ?? 'Erro desconhecido');
         })
         .finally(() => {
           toast.remove(loginToast);
@@ -90,16 +90,18 @@ export const AuthContextProvider = (props: AuthContextProviderProps) => {
           return res;
         })
         .catch((e) => {
-          e?.response?.data?.error && toast.error(e.response.data.error);
+          toast.error(e?.response?.data?.error ?? 'Erro desconhecido');
         })
         .finally(() => {
           toast.remove(registerToast);
         });
 
+      if (!result?.user) return;
+      if (!result?.token) return;
+
       setUser(result.user);
       setToken(result.token);
       navigate('/');
-
     } catch (e: any) {
       console.log(e.message);
     }
@@ -116,7 +118,9 @@ export const AuthContextProvider = (props: AuthContextProviderProps) => {
     const verifyToken = async () => {
       try {
         if (!token) throw new Error('token is missing');
-        // todo: make a request to back-end, verify token and replace the user prop
+        const result = await auth.verify(token);
+        if (!result?.user) throw new Error('unexpected response');
+        setUser(result.user);
       } catch (e: any) {
         console.log(e.message);
         setUser(null);
@@ -128,7 +132,7 @@ export const AuthContextProvider = (props: AuthContextProviderProps) => {
     verifyToken();
   }, [location, token]);
 
-  // sync token prop with localStorage
+  // sync token state with localStorage
   useEffect(() => {
     token
       ? localStorage.setItem('token', token)

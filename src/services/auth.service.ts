@@ -20,11 +20,11 @@ export const signUp = async (username: string, email: string, password: string) 
   return result?.data;
 };
 
-export const verify = async (authorization: string) => {
+export const verify = async (token: string) => {
   const result = await instance({
     url: '/auth/verify',
     method: 'get',
-    params: { authorization },
+    headers: { authorization: `Bearer ${token}` },
   });
 
   return result?.data;
