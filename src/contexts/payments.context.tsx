@@ -1,19 +1,16 @@
 import { createContext, useEffect, useState, ReactNode } from 'react';
 import * as paymentsApi from '../services/payments.service';
 import { useAuth } from '../hooks/useAuth';
-
-type Payment = {
-  customer: string,
-  date: string,
-  installments: number,
-};
+import { Payment } from '../types/payment';
 
 type PaymentsContextType = {
   payments: Payment[],
+  removePayment(id: string): Promise<void>;
 };
 
 const defaultValue: PaymentsContextType = {
   payments: [],
+  removePayment: async () => { },
 };
 
 export const PaymentsContext = createContext(defaultValue);
@@ -33,7 +30,7 @@ export const PaymentsContextProvider = (props: PaymentsContextProviderProps) => 
       if (!token) return;
       try {
         const payments = await paymentsApi.findByUser(token);
-        console.log(payments);
+        setPayments(payments);
       } catch (e) {
         console.log(e);
       }
@@ -42,8 +39,16 @@ export const PaymentsContextProvider = (props: PaymentsContextProviderProps) => 
     fetchAllPayments();
   }, []);
 
+  const removePayment = async (id: string) => {
+    // todo: await response from server
+    setPayments((state) => {
+      return state.filter((payment) => payment.id !== id);
+    });
+  };
+
   const value = {
     payments,
+    removePayment,
   };
 
   return (

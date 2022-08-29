@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import style from './button.module.scss';
 
 type ButtonProps = {
@@ -5,6 +6,7 @@ type ButtonProps = {
   onClick?(): void;
   variant?: 'default' | 'outlined';
   disabled?: boolean,
+  icon?: ReactNode,
 };
 
 export function Button(props: ButtonProps) {
@@ -13,6 +15,7 @@ export function Button(props: ButtonProps) {
     onClick,
     variant = 'default',
     disabled,
+    icon,
   } = props;
 
   return (
@@ -21,6 +24,7 @@ export function Button(props: ButtonProps) {
       className={`${style.button} ${style[variant]}`}
       disabled={disabled}
     >
+      {icon}
       {text}
     </button>
   );

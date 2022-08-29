@@ -1,7 +1,7 @@
 @import "src/variables.scss";
 
 .button {
-  width: 100%;
+  max-width: 100%;
   padding: 10px 15px;
   color: $color-light;
   border: none;
@@ -13,6 +13,10 @@
   text-align: center;
   font-family: "Inter", sans-serif;
   background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 
   &.default {
     background-color: $color-primary;
