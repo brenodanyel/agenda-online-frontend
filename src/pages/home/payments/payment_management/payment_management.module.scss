@@ -1,0 +1,49 @@
+@import "src/variables.scss";
+
+.payment_management_overlay {
+  position: fixed;
+  backdrop-filter: contrast(50%);
+  inset: 0;
+}
+
+.payment_management {
+  width: 375px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+
+  background-color: $color-light-5;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.header {
+  background-color: $color-primary;
+  padding: 5px;
+  color: $color-light;
+  font-weight: bold;
+  font-size: 1.15em;
+}
+
+.form {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+
+  > label {
+    color: $color-light-3;
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}

@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 
 type PaymentsTableProps = {
   data: Payment[];
+  onClickEdit(id: string): void;
 };
 
 export function PaymentsTable(props: PaymentsTableProps) {
@@ -19,6 +20,7 @@ export function PaymentsTable(props: PaymentsTableProps) {
 
   const {
     data,
+    onClickEdit,
   } = props;
 
   const [activeToast, setActiveToast] = useState<string>();
@@ -78,7 +80,11 @@ export function PaymentsTable(props: PaymentsTableProps) {
               <td>{formatMoney(payment.price * payment.installments)}</td>
               <td>
                 <div className={style.action}>
-                  <Button text="Editar" icon={<RiEdit2Line size={22} />} />
+                  <Button
+                    text="Editar"
+                    icon={<RiEdit2Line size={22} />}
+                    onClick={() => onClickEdit(payment.id)}
+                  />
                   <Button
                     text="Excluir"
                     icon={<RiDeleteBin6Line size={22} />}
