@@ -25,6 +25,7 @@ export function Input(props: InputProps) {
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        min={0}
       />
       {
         errorLabel && (
