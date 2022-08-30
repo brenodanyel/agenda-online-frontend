@@ -7,12 +7,16 @@ import { Payment } from '../types/payment';
 type PaymentsContextType = {
   payments: Payment[],
   fetchAllPayments(): Promise<void>;
+  addPayment(customer: string, installments: number, price: number): Promise<void>;
+  editPayment(id: string, customer: string, installments: number, price: number): Promise<void>;
   removePayment(id: string): Promise<void>;
 };
 
 const defaultValue: PaymentsContextType = {
   payments: [],
   fetchAllPayments: async () => { },
+  addPayment: async () => { },
+  editPayment: async () => { },
   removePayment: async () => { },
 };
 
@@ -55,9 +59,37 @@ export const PaymentsContextProvider = (props: PaymentsContextProviderProps) => 
     }
   };
 
+  const addPayment = async (customer: string, installments: number, price: number) => {
+    if (!token) return;
+    try {
+      const payment = await paymentsApi.createByUser(token, customer, installments, price);
+      setPayments((state) => {
+        return [...state, payment];
+      });
+      toast.success('Pagamento adicionado com sucesso!');
+    } catch (e: any) {
+      toast.error(e?.response?.data?.error ?? 'Erro desconhecido');
+    }
+  };
+
+  const editPayment = async (id: string, customer: string, installments: number, price: number) => {
+    if (!token) return;
+    try {
+      const payment = await paymentsApi.editByUser(token, id, customer, installments, price);
+      setPayments((state) => {
+        return state.map((_payment) => _payment.id == id ? payment : _payment);
+      });
+      toast.success('Pagamento editado com sucesso!');
+    } catch (e: any) {
+      toast.error(e?.response?.data?.error ?? 'Erro desconhecido');
+    }
+  };
+
   const value = {
     payments,
     fetchAllPayments,
+    addPayment,
+    editPayment,
     removePayment,
   };
 

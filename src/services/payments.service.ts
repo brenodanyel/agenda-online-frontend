@@ -19,3 +19,25 @@ export const deleteByUser = async (token: string, id: string) => {
 
   return result?.data;
 };
+
+export const createByUser = async (token: string, customer: string, installments: number, price: number) => {
+  const result = await instance({
+    url: '/payments/me',
+    method: 'post',
+    headers: { authorization: `Bearer ${token}` },
+    data: { customer, installments, price }
+  });
+
+  return result?.data;
+};
+
+export const editByUser = async (token: string, id: string, customer: string, installments: number, price: number) => {
+  const result = await instance({
+    url: `/payments/me/${id}`,
+    method: 'patch',
+    headers: { authorization: `Bearer ${token}` },
+    data: { customer, installments, price }
+  });
+
+  return result?.data;
+};
