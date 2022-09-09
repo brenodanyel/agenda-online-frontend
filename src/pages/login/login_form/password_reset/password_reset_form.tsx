@@ -23,7 +23,7 @@ export function PasswordResetForm(props: PasswordResetFormProps) {
   const [password, setPassword] = useState('');
 
   const hasCodeError = () => {
-    if (username.length <= 4) return 'O código deve ter pelo menos 4 caracteres';
+    if (code.length <= 4) return 'O código deve ter pelo menos 4 caracteres';
   };
 
   const hasPasswordError = () => {
@@ -53,19 +53,21 @@ export function PasswordResetForm(props: PasswordResetFormProps) {
         <p>
           Se {` "${username}" `} realmente pertencer a uma conta, o código será enviado para o e-mail cadastrado dentro de alguns segundos...
         </p>
-        <Input
-          placeholder='Código recebido no e-mail'
-          onChange={setCode}
-          value={code}
-          errorLabel={hasCodeError()}
-        />
-        <Input
-          placeholder='Nova senha'
-          onChange={setPassword}
-          value={password}
-          type="password"
-          errorLabel={hasPasswordError()}
-        />
+        <span className={style.row}>
+          <Input
+            placeholder='Código recebido no e-mail'
+            onChange={setCode}
+            value={code}
+            errorLabel={hasCodeError()}
+          />
+          <Input
+            placeholder='Nova senha'
+            onChange={setPassword}
+            value={password}
+            type="password"
+            errorLabel={hasPasswordError()}
+          />
+        </span>
       </span>
       <span className={style.row}>
         <Button
