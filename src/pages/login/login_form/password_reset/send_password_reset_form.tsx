@@ -19,6 +19,7 @@ export function SendPasswordResetForm(props: SendPasswordResetFormProps) {
 
   const { sendPasswordResetCode } = useAuth();
   const [username, setUsername] = useState('');
+  const [isSendingCode, setSendingCode] = useState(false);
 
   const hasUsernameError = () => {
     if (username.length <= 5) return 'O nome de usuário deve ter pelo menos 5 caracteres';
@@ -26,16 +27,22 @@ export function SendPasswordResetForm(props: SendPasswordResetFormProps) {
 
   const isButtonDisabled = () => {
     if (hasUsernameError()) return true;
-
+    if (isSendingCode) return true;
     return false;
   };
 
   const onClickSendPasswordResetCode = async () => {
+    const sending = toast.loading('Enviando código...');
     try {
+      setSendingCode(true);
       await sendPasswordResetCode(username);
       setCodeSent(username);
+      toast.success('Código enviado com sucesso!');
     } catch (e: any) {
       toast.error(e?.response?.data?.error ?? 'Erro desconhecido');
+    } finally {
+      toast.dismiss(sending);
+      setSendingCode(false);
     }
   };
 
