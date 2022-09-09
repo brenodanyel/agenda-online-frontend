@@ -23,7 +23,7 @@
     opacity: 0.3;
   }
 
-  > a {
+  > span > a {
     display: flex;
     > * {
       flex-grow: 1;
@@ -35,4 +35,10 @@
   font-size: 2em;
   text-align: center;
   color: $color-primary;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
 }

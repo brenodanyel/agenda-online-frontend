@@ -29,3 +29,23 @@ export const verify = async (token: string) => {
 
   return result?.data;
 };
+
+export const sendPasswordResetCode = async (username: string) => {
+  const result = await instance({
+    url: '/auth/password/send',
+    method: 'post',
+    data: { username },
+  });
+
+  return result?.data;
+};
+
+export const resetPassword = async (username: string, password: string, code: string) => {
+  const result = await instance({
+    url: '/auth/password/reset',
+    method: 'post',
+    data: { username, password, code },
+  });
+
+  return result?.data;
+};

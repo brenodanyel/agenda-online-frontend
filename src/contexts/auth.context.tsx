@@ -26,6 +26,8 @@ type AuthContextType = {
   signIn(params: signInParams): Promise<void>;
   signUp(params: signUpParams): Promise<void>;
   signOut(): void;
+  sendPasswordResetCode(username: string): Promise<void>;
+  resetPassword(username: string, password: string, code: string): Promise<void>;
 };
 
 const defaultValue: AuthContextType = {
@@ -34,6 +36,8 @@ const defaultValue: AuthContextType = {
   signIn: async () => { },
   signUp: async () => { },
   signOut: () => { },
+  sendPasswordResetCode: async () => { },
+  resetPassword: async () => { },
 };
 
 export const AuthContext = createContext(defaultValue);
@@ -107,6 +111,14 @@ export const AuthContextProvider = (props: AuthContextProviderProps) => {
     }
   };
 
+  const sendPasswordResetCode = async (username: string) => {
+    return auth.sendPasswordResetCode(username);
+  };
+
+  const resetPassword = async (username: string, password: string, code: string) => {
+    return auth.resetPassword(username, password, code);
+  };
+
   const signOut = () => {
     setUser(null);
     setToken(null);
@@ -145,6 +157,8 @@ export const AuthContextProvider = (props: AuthContextProviderProps) => {
     signIn,
     signUp,
     signOut,
+    sendPasswordResetCode,
+    resetPassword,
   };
 
   return (
