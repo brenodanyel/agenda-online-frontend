@@ -1,12 +1,13 @@
 import { createContext, useEffect, useState, ReactNode } from 'react';
 import { toast } from 'react-hot-toast';
+import { Range } from 'react-date-range';
 import * as paymentsApi from '../services/payments.service';
 import { useAuth } from '../hooks/useAuth';
 import { Payment } from '../types/payment';
 
 type PaymentsContextType = {
   payments: Payment[],
-  fetchAllPayments(): Promise<void>;
+  fetchAllPayments(range?: Range): Promise<void>;
   addPayment(customer: string, installments: number, price: number): Promise<void>;
   editPayment(id: string, customer: string, installments: number, price: number): Promise<void>;
   removePayment(id: string): Promise<void>;
@@ -32,10 +33,10 @@ export const PaymentsContextProvider = (props: PaymentsContextProviderProps) => 
 
   const [payments, setPayments] = useState(defaultValue.payments);
 
-  const fetchAllPayments = async () => {
+  const fetchAllPayments = async (range?: Range) => {
     if (!token) return;
     try {
-      const payments = await paymentsApi.findByUser(token);
+      const payments = await paymentsApi.findByUser(token, range);
       setPayments(payments);
     } catch (e) {
       console.log(e);

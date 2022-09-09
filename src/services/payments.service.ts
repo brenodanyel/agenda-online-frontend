@@ -1,10 +1,22 @@
 import { instance } from './api';
+import { Range } from 'react-date-range';
 
-export const findByUser = async (token: string) => {
+export const findByUser = async (token: string, range?: Range) => {
+  const params: {
+    startDate?: Date;
+    endDate?: Date;
+  } = {};
+
+  if (range) {
+    params.startDate = range.startDate;
+    params.endDate = range.endDate;
+  }
+
   const result = await instance({
     url: '/payments/me',
     method: 'get',
     headers: { authorization: `Bearer ${token}` },
+    params,
   });
 
   return result?.data;

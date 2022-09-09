@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { RiAddLine, IoReload } from 'react-icons/all';
+import { Range } from 'react-date-range';
 import { Button } from '../../../components/button';
+import { Checkbox } from '../../../components/checkbox';
 import { usePayments } from '../../../hooks/usePayments';
 import { useScrollReveal } from '../../../hooks/useScrollReveal';
 import { formatMoney } from '../../../utils/formatMoney';
 import { PaymentsTable } from './payments_table';
 import { PaymentManagement } from './payment_management';
+import { RangeFilter } from './range_filter';
 import style from './payments.module.scss';
 
 export function Payments() {
@@ -19,8 +22,11 @@ export function Payments() {
   const [managePaymentInstallment, setManagePaymentInstallment] = useState(0);
   const [managePaymentPrice, setManagePaymentPrice] = useState(0);
 
+  const [activeFilter, setFilterActive] = useState<Range | undefined>();
+  const [isModalFilterActive, setModalFilterActive] = useState(false);
+
   useEffect(() => {
-    fetchAllPayments();
+    fetchAllPayments(activeFilter);
   }, []);
 
   const onClickAdd = () => {
@@ -52,9 +58,30 @@ export function Payments() {
     setManagePaymentVisible(true);
   };
 
+  const onClickToggleFilter = () => {
+    if (activeFilter) return setFilterActive(undefined);
+    setModalFilterActive(true);
+  };
+
+  const onSelectInterval = (range: Range) => {
+    setFilterActive(range);
+  };
+
   const total = payments.reduce((previous, current) => {
     return previous + current.price * current.installments;
   }, 0);
+
+  const getIntervalString = () => {
+    if (!activeFilter?.startDate) return;
+    if (!activeFilter?.endDate) return;
+    const startDate = new Date(activeFilter.startDate).toLocaleDateString('pt-BR');
+    const endDate = new Date(activeFilter.endDate).toLocaleDateString('pt-BR');
+    return `(${startDate} - ${endDate})`;
+  };
+
+  useEffect(() => {
+    fetchAllPayments(activeFilter);
+  }, [activeFilter?.key]);
 
   return (
     <div className={`${style.payments} reveal`}>
@@ -63,9 +90,24 @@ export function Payments() {
           <Button
             text=""
             icon={<IoReload size={22} />}
-            onClick={() => fetchAllPayments()}
+            onClick={() => fetchAllPayments(activeFilter)}
           />
-          <h1 className={style.headerTitle}>Pagamentos</h1>
+          <div>
+            <h1 className={style.headerTitle}>Pagamentos</h1>
+            <Checkbox
+              checked={!!activeFilter}
+              onChange={onClickToggleFilter}
+            >
+              <span>
+                Filtrar por intervalo {getIntervalString()}
+              </span>
+            </Checkbox>
+            <RangeFilter
+              isOpen={isModalFilterActive}
+              onRequestClose={() => setModalFilterActive(false)}
+              onSelectInterval={onSelectInterval}
+            />
+          </div>
         </div>
         <Button
           text="Criar pagamento"

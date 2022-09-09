@@ -1,0 +1,32 @@
+@import "src/variables.scss";
+
+.range_filter_overlay {
+  position: fixed;
+  backdrop-filter: contrast(50%);
+  inset: 0;
+}
+
+.range_filter {
+  width: fit-content;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+
+  background-color: $color-light-5;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  border: 1px solid rgba(0, 0, 0, 0.5);
+
+  padding: 1em;
+}
+
+.buttons_container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+}
