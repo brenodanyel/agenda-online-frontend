@@ -23,7 +23,7 @@ export function PasswordResetForm(props: PasswordResetFormProps) {
   const [password, setPassword] = useState('');
 
   const hasCodeError = () => {
-    if (code.length <= 4) return 'O código deve ter pelo menos 4 caracteres';
+    if (code.length < 4) return 'O código deve ter pelo menos 4 caracteres';
   };
 
   const hasPasswordError = () => {
