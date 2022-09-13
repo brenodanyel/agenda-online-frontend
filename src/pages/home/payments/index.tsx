@@ -4,10 +4,12 @@ import { RiAddLine, IoReload } from 'react-icons/all';
 import { Range } from 'react-date-range';
 import { Button } from '../../../components/button';
 import { Checkbox } from '../../../components/checkbox';
+import { ConfirmationToast } from '../../../components/confirmation_toast';
 import { usePayments } from '../../../hooks/usePayments';
 import { useScrollReveal } from '../../../hooks/useScrollReveal';
 import { formatMoney } from '../../../utils/formatMoney';
 import { PaymentsTable } from './payments_table';
+import { PaymentsTableMobile } from './payments_table_mobile';
 import { PaymentManagement } from './payment_management';
 import { RangeFilter } from './range_filter';
 import style from './payments.module.scss';
@@ -17,6 +19,7 @@ export function Payments() {
 
   const [activeToast, setActiveToast] = useState<string | undefined>();
 
+  const { payments, fetchAllPayments, addPayment, editPayment, removePayment } = usePayments();
   const [isManagePaymentVisible, setManagePaymentVisible] = useState(false);
   const [editingPayment, setEditingPayment] = useState<string | undefined>();
 
@@ -45,6 +48,25 @@ export function Payments() {
     setManagePaymentInstallment(0);
     setManagePaymentPrice(0);
     setManagePaymentVisible(true);
+  };
+
+  const onClickRemove = (id: string) => {
+    if (activeToast) {
+      toast.dismiss(activeToast);
+    }
+
+    const onConfirmRemove = async () => {
+      await removePayment(id);
+    };
+
+    const t = toast((t) => (
+      <ConfirmationToast
+        t={t}
+        title="Você tem certeza de que deseja remover este pagamento?"
+        onConfirm={onConfirmRemove}
+      />), { position: 'top-center', duration: 10000 });
+
+    setActiveToast(t);
   };
 
   const onConfirmAddPayment = async (customer: string, date: Date, installments: number, price: number) => {
@@ -82,17 +104,25 @@ export function Payments() {
     return previous + current.price * current.installments;
   }, 0);
 
+  const totalThisMonth = payments.reduce((previous, current) => {
+    return previous + current.price;
+  }, 0);
+
   const getIntervalString = () => {
     if (!activeFilter?.startDate) return;
     if (!activeFilter?.endDate) return;
     const startDate = new Date(activeFilter.startDate).toLocaleDateString('pt-BR');
     const endDate = new Date(activeFilter.endDate).toLocaleDateString('pt-BR');
+    if (startDate === endDate) return `(${startDate})`;
     return `(${startDate} - ${endDate})`;
   };
 
   useEffect(() => {
     fetchAllPayments(activeFilter);
   }, [activeFilter?.key]);
+
+  const displayPayments = payments
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <div className={`${style.payments} reveal`}>
@@ -128,14 +158,18 @@ export function Payments() {
       </div>
       <div className={style.table_wrapper}>
         <PaymentsTable
-          data={payments.sort((a, b) => new Date(b.date).getMilliseconds() - new Date(a.date).getMilliseconds())}
+          data={displayPayments}
           onClickEdit={onClickEdit}
+          onClickRemove={onClickRemove}
+        />
+        <PaymentsTableMobile
+          data={displayPayments}
+          onClickEdit={onClickEdit}
+          onClickRemove={onClickRemove}
         />
       </div>
       <h3>
-        Total a receber:
-        {' '}
-        {formatMoney(total)}
+        {`Recebimento${getIntervalString() ? ` durante ${getIntervalString()}` : ''}: ${formatMoney(totalThisMonth)}`}
       </h3>
       <PaymentManagement
         isOpen={isManagePaymentVisible}
