@@ -11,13 +11,16 @@ type PaymentManagementProps = {
   customer: string;
   setCustomer(e: any): void;
 
+  paymentDate: Date;
+  setPaymentDate(e: any): void;
+
   installments: number;
   setInstallments(e: any): void;
 
   price: number;
   setPrice(e: any): void;
 
-  onConfirm(customer: string, installments: number, price: number): void;
+  onConfirm(customer: string, date: Date, installments: number, price: number): void;
 
   title: string;
   onRequestClose(): void,
@@ -30,6 +33,8 @@ export function PaymentManagement(props: PaymentManagementProps) {
     onRequestClose,
     customer,
     setCustomer,
+    paymentDate,
+    setPaymentDate,
     installments,
     setInstallments,
     price,
@@ -60,6 +65,11 @@ export function PaymentManagement(props: PaymentManagementProps) {
     return false;
   };
 
+  const handlePaymentDate = (value: string) => {
+    if (!Date.parse(value)) return;
+    setPaymentDate(new Date(value));
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -75,6 +85,15 @@ export function PaymentManagement(props: PaymentManagementProps) {
           <Input
             onChange={setCustomer}
             value={customer}
+            errorLabel={hasCustomerError()}
+          />
+        </label>
+        <label>
+          Data do pagamento
+          <Input
+            onChange={handlePaymentDate}
+            value={paymentDate.toISOString().slice(0, 10)}
+            type="date"
             errorLabel={hasCustomerError()}
           />
         </label>
@@ -100,7 +119,7 @@ export function PaymentManagement(props: PaymentManagementProps) {
           <Button
             text='Confirmar'
             disabled={isButtonDisabled()}
-            onClick={() => { onConfirm(customer, Number(installments), Number(price)); closeWindow(); }}
+            onClick={() => { onConfirm(customer, paymentDate, Number(installments), Number(price)); closeWindow(); }}
           />
           <Button
             text='Cancelar'

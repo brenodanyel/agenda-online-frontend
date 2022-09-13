@@ -8,8 +8,8 @@ import { Payment } from '../types/payment';
 type PaymentsContextType = {
   payments: Payment[],
   fetchAllPayments(range?: Range): Promise<void>;
-  addPayment(customer: string, installments: number, price: number): Promise<void>;
-  editPayment(id: string, customer: string, installments: number, price: number): Promise<void>;
+  addPayment(customer: string, date: Date, installments: number, price: number): Promise<void>;
+  editPayment(id: string, customer: string, date: Date, installments: number, price: number): Promise<void>;
   removePayment(id: string): Promise<void>;
 };
 
@@ -60,10 +60,10 @@ export const PaymentsContextProvider = (props: PaymentsContextProviderProps) => 
     }
   };
 
-  const addPayment = async (customer: string, installments: number, price: number) => {
+  const addPayment = async (customer: string, date: Date, installments: number, price: number) => {
     if (!token) return;
     try {
-      const payment = await paymentsApi.createByUser(token, customer, installments, price);
+      const payment = await paymentsApi.createByUser(token, customer, date, installments, price);
       setPayments((state) => {
         return [...state, payment];
       });
@@ -73,10 +73,10 @@ export const PaymentsContextProvider = (props: PaymentsContextProviderProps) => 
     }
   };
 
-  const editPayment = async (id: string, customer: string, installments: number, price: number) => {
+  const editPayment = async (id: string, customer: string, date: Date, installments: number, price: number) => {
     if (!token) return;
     try {
-      const payment = await paymentsApi.editByUser(token, id, customer, installments, price);
+      const payment = await paymentsApi.editByUser(token, id, customer, date, installments, price);
       setPayments((state) => {
         return state.map((_payment) => _payment.id == id ? payment : _payment);
       });

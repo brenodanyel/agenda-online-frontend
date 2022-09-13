@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { RiAddLine, IoReload } from 'react-icons/all';
 import { Range } from 'react-date-range';
 import { Button } from '../../../components/button';
@@ -14,11 +15,13 @@ import style from './payments.module.scss';
 export function Payments() {
   useScrollReveal();
 
-  const { payments, fetchAllPayments, addPayment, editPayment } = usePayments();
+  const [activeToast, setActiveToast] = useState<string | undefined>();
+
   const [isManagePaymentVisible, setManagePaymentVisible] = useState(false);
   const [editingPayment, setEditingPayment] = useState<string | undefined>();
 
   const [managePaymentCustomer, setManagePaymentCustomer] = useState('');
+  const [managePaymentDate, setManagePaymentDate] = useState(new Date());
   const [managePaymentInstallment, setManagePaymentInstallment] = useState(0);
   const [managePaymentPrice, setManagePaymentPrice] = useState(0);
 
@@ -29,22 +32,29 @@ export function Payments() {
     fetchAllPayments(activeFilter);
   }, []);
 
+  useEffect(() => () => {
+    if (activeToast) {
+      toast.dismiss(activeToast);
+    }
+  }, [activeToast]);
+
   const onClickAdd = () => {
     setEditingPayment(undefined);
     setManagePaymentCustomer('');
+    setManagePaymentDate(new Date());
     setManagePaymentInstallment(0);
     setManagePaymentPrice(0);
     setManagePaymentVisible(true);
   };
 
-  const onConfirmAddPayment = async (customer: string, installments: number, price: number) => {
-    await addPayment(customer, installments, price);
+  const onConfirmAddPayment = async (customer: string, date: Date, installments: number, price: number) => {
+    await addPayment(customer, date, installments, price);
     setManagePaymentVisible(false);
   };
 
-  const onConfirmEditPayment = async (customer: string, installments: number, price: number) => {
+  const onConfirmEditPayment = async (customer: string, date: Date, installments: number, price: number) => {
     if (!editingPayment) return;
-    await editPayment(editingPayment, customer, installments, price);
+    await editPayment(editingPayment, customer, date, installments, price);
     setManagePaymentVisible(false);
   };
 
@@ -52,6 +62,7 @@ export function Payments() {
     const payment = payments.find((payment) => payment.id === id);
     if (!payment) return;
     setManagePaymentCustomer(payment.customer);
+    setManagePaymentDate(new Date(payment.date));
     setManagePaymentInstallment(payment.installments);
     setManagePaymentPrice(payment.price);
     setEditingPayment(payment.id);
@@ -135,6 +146,9 @@ export function Payments() {
 
         customer={managePaymentCustomer}
         setCustomer={setManagePaymentCustomer}
+
+        paymentDate={managePaymentDate}
+        setPaymentDate={setManagePaymentDate}
 
         installments={managePaymentInstallment}
         setInstallments={setManagePaymentInstallment}
